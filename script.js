@@ -32,7 +32,7 @@ function generate() {
 	opt.gettersSelection = document.getElementById('getter').value;
 	opt.settersSelection = document.getElementById('setter').value;
 	opt.includeNullableTypes = document.getElementById('nullable_types').checked;
-	opt.removeFieldUnderscores = document.getElementById('remove_underscores').checked;
+	opt.removeUnderscores = document.getElementById('remove_underscores').checked;
 	opt.fieldNameCasingSelection = document.getElementById('casing').value;;
  
  	// Generate the output;
@@ -378,7 +378,7 @@ function createOutput(tables, options) {
 			}
 
 			result += spaces + 'public ' + convertDataTypeToCS(field.dataType) + ' ' + 
-				mutateFieldName(field.name, options.removeFieldUnderscores) + getSetStr + ';\n';
+				mutateFieldName(field.name, options) + getSetStr + ';\n';
 		}
 
 		// Class and namespace closing statements.
@@ -416,9 +416,22 @@ function convertDataTypeToCS(dataType) {
 	}
 }
 
-function mutateFieldName(name, removeUnderscores = true) {
+/**
+ * Mutate a field name.
+ * 
+ * @param  {string} name
+ * @param  {OutputOptions} options
+ * @return {string}
+ */
+function mutateFieldName(name, options) {
 
-	if(true) {
+	if(options.fieldNameCasingSelection == 1) {
+		// Only capitalize the first letter.
+
+		name = capitalizeFirstLetter(name);
+
+	} else if(options.fieldNameCasingSelection == 2) {
+		// CamelCase.
 
 		// Split the name on underscore.
 		var pieces = name.split('_');
@@ -427,16 +440,14 @@ function mutateFieldName(name, removeUnderscores = true) {
 			pieces[b] = capitalizeFirstLetter(pieces[b]);
 		}
 
-		if(removeUnderscores) {
-			return pieces.join('');
-		} else {
-			// Put the underscores back.
-			return pieces.join('_');
-		}
+		// Put the underscores back.
+		name = pieces.join('_');
+	}
 
+	// Remove underscores if desired.
+	if(options.removeUnderscores) {
+		return name.replace('_', '');
 	} else {
-		return capitalizeFirstLetter(name);
+		return name;
 	}
 }
-
-]
