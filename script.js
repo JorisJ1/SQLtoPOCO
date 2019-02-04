@@ -1,3 +1,8 @@
+/**
+ * Generate C# POCO's from an SQL CREATE TABLE script.
+ * 
+ * @return void
+ */
 function generate() {
 	var input = document.getElementById('input').value;
 	var output = '';
