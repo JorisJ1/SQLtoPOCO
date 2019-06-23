@@ -395,9 +395,14 @@ function createOutput(tables, options) {
 
 		// Class and namespace closing statements.
 		if(options.addNamespaces) {
-			result += '    }\n}\n\n';
+			result += '    }\n}';
 		} else {
-			result += '}\n\n';
+			result += '}';
+		}
+
+		// Add newlines between classes.
+		if (i < tables.length - 1) {
+			result += '\n\n';
 		}
 	}
 	
