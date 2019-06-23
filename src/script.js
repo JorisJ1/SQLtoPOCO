@@ -5,8 +5,32 @@
  */
 function generate() {
 	var input = document.getElementById('input').value;
-	var output = '';
 
+	// See which options are selected for the output.
+	var opt = new OutputOptions();
+	opt.addNamespaces = document.getElementById('namespace').checked;
+	opt.addAnnotations = document.getElementById('table_annotation').checked;
+	opt.gettersSelection = document.getElementById('getter').value;
+	opt.settersSelection = document.getElementById('setter').value;
+	opt.includeNullableTypes = document.getElementById('nullable_types').checked;
+	opt.removeUnderscores = document.getElementById('remove_underscores').checked;
+	opt.fieldNameCasingSelection = document.getElementById('casing').value;;
+ 
+ 	// Generate the output;
+	var result = generateString(input, opt);
+
+	document.getElementById('output').value = result;
+}
+
+/**
+ * Generate C# POCO's from an SQL CREATE TABLE script.
+ * 
+ * @param  string input   String containing SQL CREATE script.
+ * @param  object options OutputOptions object.
+ * @return string 		  String containing C# code.
+ */
+function generateString(input, options) {
+	
 	// Perform some cleaning on the whole input string.
 	input = cleanSqlString(input);
 
@@ -24,21 +48,9 @@ function generate() {
 	tables.forEach(function(table) {
 		table.fields = parseTableFieldsSql(table.fieldsSql);
 	});
-
-	// See which options are selected for the output.
-	var opt = new OutputOptions();
-	opt.addNamespaces = document.getElementById('namespace').checked;
-	opt.addAnnotations = document.getElementById('table_annotation').checked;
-	opt.gettersSelection = document.getElementById('getter').value;
-	opt.settersSelection = document.getElementById('setter').value;
-	opt.includeNullableTypes = document.getElementById('nullable_types').checked;
-	opt.removeUnderscores = document.getElementById('remove_underscores').checked;
-	opt.fieldNameCasingSelection = document.getElementById('casing').value;;
  
- 	// Generate the output;
-	var result = createOutput(tables, opt);
-
-	document.getElementById('output').value = result;
+ 	// Generate and return the output;
+	return createOutput(tables, options);
 }
 
 /**
