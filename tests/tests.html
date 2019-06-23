@@ -3,5 +3,24 @@
 <script>
  tests({
 
+	'convert test 1': function() {
+
+		const input = `
+CREATE TABLE persons (
+    id INT
+);
+`
+		const expectedOutput = `
+public class Persons
+{
+    public int id;
+}
+`
+		var options = new OutputOptions();
+		var output = generateString(input, options);
+
+		eq(expectedOutput.trim(), output.trim());
+	},
+
  });
 </script>
