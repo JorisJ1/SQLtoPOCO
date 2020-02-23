@@ -10,8 +10,7 @@
 	<script>
 		tests({
 
-			'simple_conversion': function() {
-
+			'simple_field_converts_correctly': function() {
 				const input = `
 CREATE TABLE persons (
     id INT
@@ -21,14 +20,11 @@ public class Persons
 {
     public int id;
 }`
-				var options = new OutputOptions();
-				var output = generateString(input, options);
-
+				var output = generateString(input, new OutputOptions());
 				eq(expectedOutput.trim(), output.trim());
 			},
 
-			'simple_conversion_with_line_comment': function() {
-
+			'line_comments_are_ignored': function() {
 				const input = `
 CREATE TABLE persons (
     id INT -- This is a comment.
@@ -38,14 +34,11 @@ public class Persons
 {
     public int id;
 }`
-				var options = new OutputOptions();
-				var output = generateString(input, options);
-
+				var output = generateString(input, new OutputOptions());
 				eq(expectedOutput.trim(), output.trim());
 			},
 
 			'constraints_are_ignored': function() {
-
 				const input = `
 CREATE TABLE persons (
     id INT,
@@ -56,12 +49,27 @@ public class Persons
 {
     public int id;
 }`
-				var options = new OutputOptions();
-				var output = generateString(input, options);
-
+				var output = generateString(input, new OutputOptions());
 				eq(expectedOutput.trim(), output.trim());
 			},
+
+            'all_underscores_are_removed': function() {
+                const input = `
+CREATE TABLE persons (
+    a_b_c INT
+);`
+                const expectedOutput = `
+public class Persons
+{
+    public int abc;
+}`  
+                var options = new OutputOptions();
+                options.removeUnderscores = true;
+                var output = generateString(input, options);
+                eq(expectedOutput.trim(), output.trim());
+            },
 		});
+
 	</script>
 </body>
 </html>

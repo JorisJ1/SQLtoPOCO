@@ -476,7 +476,7 @@ function mutateFieldName(name, options) {
 
 	// Remove underscores if desired.
 	if(options.removeUnderscores) {
-		return name.replace('_', '');
+		return name.replace(/_/g, '');
 	} else {
 		return name;
 	}
