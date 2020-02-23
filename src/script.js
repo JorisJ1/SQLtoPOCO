@@ -74,6 +74,11 @@ function generateString(input, options) {
 
 		var fieldSql = fieldsSql[fieldIndex];
 
+		// Ignore empty lines.
+		if (fieldSql.length == 0) {
+			continue;
+		}
+
 		if(isRegularTableField(fieldSql)) {
 			fields.push(parseRegularFieldSql(fieldSql));
 		} else {
@@ -288,6 +293,13 @@ function parseSpecialFieldSql(str) {
 	return tables;
 }
 
+/**
+ * Remove unneeded lines from an array of CREATE TABLE SQL lines.
+ * 
+ * @param  array lines 	Array containing every line from the SQL.
+ * @return array		Array containing every line from the SQL, 
+ *                      minus unneeded lines (such as comments).
+ */
 function cleanSqlLines(lines) {
 	
 	for (i = 0; i < lines.length; i++) {
@@ -298,9 +310,10 @@ function cleanSqlLines(lines) {
 		// Clear unneeded lines.
 		if (lines[i].startsWith('--')) {
 			lines[i] = '';
+		} else if (lines[i].startsWith('CONSTRAINT')) {
+			lines[i] = '';
 		}
 	}
-
 
 	return lines;
 }

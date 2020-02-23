@@ -1,26 +1,67 @@
-<script src="tinytest.js"></script>
-<script src="../src/script.js"></script>
-<script>
- tests({
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>SQL to POCO converter - Tests</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<script src="tinytest.js"></script>
+	<script src="../src/script.js"></script>
+	<script>
+		tests({
 
-	'convert test 1': function() {
+			'simple_conversion': function() {
 
-		const input = `
+				const input = `
 CREATE TABLE persons (
     id INT
-);
-`
-		const expectedOutput = `
+);`
+				const expectedOutput = `
 public class Persons
 {
     public int id;
-}
-`
-		var options = new OutputOptions();
-		var output = generateString(input, options);
+}`
+				var options = new OutputOptions();
+				var output = generateString(input, options);
 
-		eq(expectedOutput.trim(), output.trim());
-	},
+				eq(expectedOutput.trim(), output.trim());
+			},
 
- });
-</script>
+			'simple_conversion_with_line_comment': function() {
+
+				const input = `
+CREATE TABLE persons (
+    id INT -- This is a comment.
+);`
+				const expectedOutput = `
+public class Persons
+{
+    public int id;
+}`
+				var options = new OutputOptions();
+				var output = generateString(input, options);
+
+				eq(expectedOutput.trim(), output.trim());
+			},
+
+			'constraints_are_ignored': function() {
+
+				const input = `
+CREATE TABLE persons (
+    id INT,
+    CONSTRAINT id_check CHECK (id = (0)::numeric))
+);`
+				const expectedOutput = `
+public class Persons
+{
+    public int id;
+}`
+				var options = new OutputOptions();
+				var output = generateString(input, options);
+
+				eq(expectedOutput.trim(), output.trim());
+			},
+		});
+	</script>
+</body>
+</html>
