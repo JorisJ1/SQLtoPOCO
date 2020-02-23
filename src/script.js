@@ -12,7 +12,7 @@ function generate() {
 	opt.addAnnotations = document.getElementById('table_annotation').checked;
 	opt.gettersSelection = document.getElementById('getter').value;
 	opt.settersSelection = document.getElementById('setter').value;
-	opt.includeNullableTypes = document.getElementById('nullable_types').checked;
+	// opt.includeNullableTypes = document.getElementById('nullable_types').checked; // TODO.
 	opt.removeUnderscores = document.getElementById('remove_underscores').checked;
 	opt.fieldNameCasingSelection = document.getElementById('casing').value;;
  
