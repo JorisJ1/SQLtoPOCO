@@ -68,6 +68,16 @@ public class Persons
                 var output = generateString(input, options);
                 eq(expectedOutput.trim(), output.trim());
             },
+
+            'alter_table_statement_is_ignored': function() {
+                const input = `
+ALTER TABLE persons ADD CONSTRAINT c1 FOREIGN KEY (name)`
+                const expectedOutput = ``  
+                var options = new OutputOptions();
+                options.removeUnderscores = true;
+                var output = generateString(input, options);
+                eq(expectedOutput.trim(), output.trim());
+            },
 		});
 
 	</script>
