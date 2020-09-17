@@ -78,6 +78,16 @@ ALTER TABLE persons ADD CONSTRAINT c1 FOREIGN KEY (name)`
                 var output = generateString(input, options);
                 eq(expectedOutput.trim(), output.trim());
             },
+
+            'create_index_statement_is_ignored': function() {
+                const input = `
+CREATE INDEX person_idx ON persons USING btree (id);`
+                const expectedOutput = ``  
+                var options = new OutputOptions();
+                options.removeUnderscores = true;
+                var output = generateString(input, options);
+                eq(expectedOutput.trim(), output.trim());
+            },
 		});
 
 	</script>

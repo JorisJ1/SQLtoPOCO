@@ -308,9 +308,11 @@ function cleanSqlLines(lines) {
 		lines[i] = lines[i].trim();
 		
 		// Clear unneeded lines.
-		if (lines[i].startsWith('--')) {
-			lines[i] = '';
-		} else if (lines[i].startsWith('CONSTRAINT')) {
+		if (lines[i].startsWith('--') || 
+			lines[i].startsWith('CONSTRAINT') || 
+			lines[i].startsWith('ALTER TABLE') ||
+			lines[i].startsWith('CREATE INDEX')) {
+
 			lines[i] = '';
 		}
 	}
