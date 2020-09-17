@@ -443,6 +443,8 @@ function convertDataTypeToCS(dataType) {
 		return 'DateTime';
 	} else if (dataType == 'bool' || dataType == 'boolean' || dataType == 'tinyint(1)') {
 		return 'bool';
+	} else if (dataType.startsWith('bpchar')) {
+		return 'char';
 	} else {
 		return 'object';
 	}
